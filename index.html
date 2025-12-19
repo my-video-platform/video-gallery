@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архив устной истории</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: rgba(10, 10, 30, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(100, 100, 200, 0.2);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #4CC9F0, #4361EE);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .video-count {
+            display: inline-block;
+            background: linear-gradient(90deg, #4361EE, #3A0CA3);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+        
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .video-item {
+            background: rgba(20, 20, 50, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(100, 150, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .video-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            border-color: rgba(100, 150, 255, 0.3);
+        }
+        
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        .video-title {
+            font-size: 1.5rem;
+            color: #4CC9F0;
+            font-weight: 600;
+        }
+        
+        .video-number {
+            background: #4361EE;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.4);
+        }
+        
+        .video-player-container {
+            display: flex;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        iframe {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(100, 150, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        iframe:hover {
+            border-color: rgba(100, 150, 255, 0.5);
+        }
+        
+        .video-description {
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+        
+        .video-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .feature-tag {
+            background: rgba(67, 97, 238, 0.2);
+            color: #9bb1ff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(100, 150, 255, 0.2);
+            color: #888;
+            font-size: 0.95rem;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .control-btn {
+            background: linear-gradient(90deg, #4361EE, #3A0CA3);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.5);
+        }
+        
+        @media (max-width: 1200px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .gallery-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            iframe {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16/9;
+            }
+            
+            .video-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .video-title {
+                font-size: 1.3rem;
+            }
+            
+            .video-item {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Архив устной истории</h1>
+            <p class="subtitle">Онлайн-платформа для хранения видеоинтервью ветеранов и тружеников тыла с автоматической расшифровкой речи.</p>
+        </header>
+        
+        <main>
+            <div class="gallery-container">
+                <!-- Видео 1 -->
+                <div class="video-item">
+                    <div class="video-header">
+                        <div class="video-title">От Ульяновска до Германии: воспоминания ветерана Великой Отечественной войны</div>
+                        <div class="video-number">1</div>
+                    </div>
+                    <div class="video-player-container">
+                        <iframe width="560" height="315" src="https://runtime.video.cloud.yandex.net/player/video/vplvy4wh7lbjuyobitmv?autoplay=0&mute=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <p class="video-description">100-летняя Клавдия Вьюговская, одна из последних свидетельниц Курской битвы в регионе, вспоминает свою фронтовую юность: путь от деревенской грамотеи до медсестры полевого госпиталя, пять дней под непрерывным гулом сражения и раненого юношу, плакавшего о несостоявшейся жизни и первом поцелуе.</p>
+                    
+                </div>
+                
+                <!-- Видео 2 -->
+                <div class="video-item">
+                    <div class="video-header">
+                        <div class="video-title">«Секрет долголетия — это труд». Вековой юбилей отметила ветеран из Ульяновска</div>
+                        <div class="video-number">2</div>
+                    </div>
+                    <div class="video-player-container">
+                        <iframe width="560" height="315" src="https://runtime.video.cloud.yandex.net/player/video/vplvzwhgw3zcnp6js5iv?autoplay=0&mute=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <p class="video-description">18-летней медсестрой пройдя всю войну и вынеся с поля боя сотни раненых, Екатерина Синюкова и после Победы посвятила жизнь заботе о людях, пронеся через столетие доброту и светлую улыбку.</p>
+                </div>
+                
+                <!-- Видео 3 -->
+                <div class="video-item">
+                    <div class="video-header">
+                        <div class="video-title">Ветераны боевых действий из Ульяновской области своих в непростой ситуации не бросают.</div>
+                        <div class="video-number">3</div>
+                    </div>
+                    <div class="video-player-container">
+                        <iframe width="560" height="315" src="https://runtime.video.cloud.yandex.net/player/video/vplvpjgtamqsuhbcbk47?autoplay=0&mute=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <p class="video-description">Ветераны боевых действий из Ульяновской области совместно с жителями региона организовали сбор гуманитарной помощи для военнослужащих на передовой, планируя лично доставить груз в подразделения и продолжить поддержку необходимыми материалами.</p>
+                    
+                </div>
+                
+                <!-- Видео 4 -->
+                <div class="video-item">
+                    <div class="video-header">
+                        <div class="video-title">Герой Гостомельского десанта</div>
+                        <div class="video-number">4</div>
+                    </div>
+                    <div class="video-player-container">
+                        <iframe width="560" height="315" src="https://runtime.video.cloud.yandex.net/player/video/vplv3ecpp4o6qfikmwpi?autoplay=0&mute=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <p class="video-description">Родители рассказывают историю подвига и гибели сына, участника СВО и Гостомельского десанта, и увековечивают его память, воссоздавая разведывательную машину по его чертежам.</p>
+                    <div class="video-features">
+                        <span class="feature-tag">API управление</span>
+                        <span class="feature-tag">Шифрование</span>
+                        <span class="feature-tag">Аналитика</span>
+                    </div>
+                </div>
+                
+                <!-- Видео 5 -->
+                <div class="video-item">
+                    <div class="video-header">
+                        <div class="video-title">Ульяновские ветераны вспоминают блокаду Ленинграда</div>
+                        <div class="video-number">5</div>
+                    </div>
+                    <div class="video-player-container">
+                        <iframe width="560" height="315" src="https://runtime.video.cloud.yandex.net/player/video/vplvk7kyqyosy72vu24m?autoplay=0&mute=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <p class="video-description">История ветеранов Игоря Фомича и Екатерины Ивановны, чьи судьбы пересекла война: лётчик, участвовавший в прорыве блокады Ленинграда и встретивший Победу в Польше, и медсестра, прошедшая фронт от Москвы до Берлина и потерявшая на войне трёх братьев.</p>
+                    
+                </div>
+                
+                <!-- Видео 6 -->
+                <div class="video-item">
+                    <div class="video-header">
+                        <div class="video-title">Ушёл из жизни легендарный ульяновский ветеран</div>
+                        <div class="video-number">6</div>
+                    </div>
+                    <div class="video-player-container">
+                        <iframe width="560" height="315" src="https://runtime.video.cloud.yandex.net/player/video/vplvwmjhzlqaqdmfcvi7?autoplay=0&mute=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <p class="video-description">Ветеран Игорь Федьчук, прошедший всю войну от Сталинграда до Берлина и сохранивший ясную память до 102 лет, скончался 8 марта, оставив о себе воспоминания как о человеке-легенде с неиссякаемым оптимизмом.</p>
+                    
+                </div>
+                
+                <!-- Видео 7 -->
+                <div class="video-item">
+                    <div class="video-header">
+                        <div class="video-title">День памяти и скорби. Яковлев Василий Иванович.</div>
+                        <div class="video-number">7</div>
+                    </div>
+                    <div class="video-player-container">
+                        <iframe width="560" height="315" src="https://runtime.video.cloud.yandex.net/player/video/vplvdesvpufjzn3emkb3?autoplay=0&mute=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <p class="video-description">102-летний ветеран Василий Яковлев вспоминает начало войны в своем детстве, когда во время игры в футбол на их деревню напал немецкий самолёт, и после налёта дети бежали считать пробоины в крышах домов.</p>
+                    
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn" onclick="scrollToTop()">В начало страницы</button>
+                <button class="control-btn" onclick="toggleDarkMode()">Переключить тему</button>
+            </div>
+        </main>
+        
+       
+    </div>
+    
+    <script>
+        // Функция для прокрутки страницы вверх
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Функция для переключения темной/светлой темы
+        function toggleDarkMode() {
+            const body = document.body;
+            const container = document.querySelector('.container');
+            
+            if (body.style.background.includes('rgb(248, 248, 255)')) {
+                // Возвращаем темную тему
+                body.style.background = 'linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 100%)';
+                body.style.color = '#f0f0f0';
+                container.style.backgroundColor = 'rgba(10, 10, 30, 0.8)';
+                container.style.borderColor = 'rgba(100, 100, 200, 0.2)';
+            } else {
+                // Включаем светлую тему
+                body.style.background = 'linear-gradient(135deg, #f0f0ff 0%, #e0e0ff 100%)';
+                body.style.color = '#333';
+                container.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                container.style.borderColor = 'rgba(100, 100, 200, 0.3)';
+            }
+        }
+        
+        // Добавляем обработчики для всех видео-iframe для улучшения взаимодействия
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframes = document.querySelectorAll('iframe');
+            
+            iframes.forEach((iframe, index) => {
+                // Добавляем атрибут title для доступности
+                iframe.setAttribute('title', `Видеоплеер ${index + 1} - Yandex Cloud Video`);
+                
+                // Обработка загрузки iframe
+                iframe.addEventListener('load', function() {
+                    console.log(`Видео ${index + 1} успешно загружено`);
+                });
+            });
+            
+            // Сообщение при загрузке страницы
+            console.log('Галерея видео Yandex Cloud успешно загружена');
+        });
+    </script>
+</body>
+</html>
